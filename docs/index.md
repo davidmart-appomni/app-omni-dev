@@ -7,6 +7,7 @@
 1. **Database Schema Optimization**
    - Normalization and Denormalization
    - Indexing Strategies
+     - [Analysis](/docs/index-analysis.md)
    - Data Type Selection
    - Partitioning
    - Using Views
@@ -15,11 +16,18 @@
    - Query Profiling
    - Query Optimization Techniques
    - Query Caching
+     - [Analysis](/docs/cache-analysis.md)
    - Avoiding N+1 Query Problem
+     - [Analysis](/docs/n1-analysis.md)
+     - [Examples](/docs/n1-examples.md)
    - Lazy Loading
+     - [Analysis](/docs/lazy-loading-analysis.md)
+     - [Examples](/docs/lazy-loading-examples.md)
 
 3. **Django ORM Best Practices**
    - Selecting Fields Wisely
+     - [Analysis](/docs/orm-fields-analysis.md)
+     - [Examples](/docs/orm-fields-analysis.md)
    - Using `select_related` and `prefetch_related`
    - Queryset Optimization
    - Avoiding Unnecessary Joins
@@ -37,8 +45,11 @@
 
 6. **Caching Strategies**
    - Caching Queries
+     - [Examples](/docs/cache-examples.md)
    - Cache Invalidation
+     - [Examples](/docs/cache-invalidation.md)
    - Using Third-party Cache Libraries
+     - [Possible solutions](/docs/third-party-possible-solutions.md)
 
 7. **Horizontal and Vertical Scaling**
    - Horizontal Scaling with Load Balancers
@@ -60,8 +71,6 @@ Partitioning involves dividing large tables into smaller, more manageable pieces
 
 #### 1.5 Using Views
 Database views allow you to abstract complex queries into virtual tables. This can simplify the application code and improve query readability. Views can also help in restricting access to sensitive data. Consider creating views for frequently used and complex queries, as well as for securing access to specific data subsets.
-
-### 2. Query Optimization
 
 ### 2. Query Optimization
 
