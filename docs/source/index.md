@@ -4,6 +4,8 @@
 
 @include "./introduction.md"
 
+## Contents
+
 ## Knowledgebase
 
 @include "./1-database-schema-optimization/1-0-index.md"

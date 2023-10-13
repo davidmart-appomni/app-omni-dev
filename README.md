@@ -1,19 +1,9 @@
 # AppOmni Django ORM/Postgres Analysis Workbook
 
-### Analysis and Best Practices 
+### [Knowledgebase](/docs/index.md)
 
-- link
+### [Tools](/tools/index.md)
 
-### Tools
+### [Case Studies](/case-studies/index.md)
 
-- link
-
-### Case based analysis and recommendations
-
-- link
-
-### 
-
-### (DEV) Local setup
-
-@include "setup.md"
+### [(DEV) Local setup](/docs/setup.md)
