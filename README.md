@@ -1,27 +1,19 @@
-## Local setup (mac)
+# AppOmni Django ORM/Postgres Analysis Workbook
 
-```sh
+### Analysis and Best Practices 
 
-# setup sh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+- link
 
-# install homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+### Tools
 
-# setup gcloud
-brew install --cask google-cloud-sdk
-gcloud auth login
-gcloud auth application-default login
+- link
 
-# cloud sql proxy setup
-new install 
-mkdir -p ~/dev/cloudsql
-cloud-sql-proxy --unix-socket ~/dev/cloudsql INSTANCE_CONNECTION_NAME
+### Case based analysis and recommendations
 
-# setup psql
-brew install libpq
-echo 'export PATH="/usr/local/opt/libpq/bin:$PATH"' >> ~/.zshrc
+- link
 
-# connect
-psql -h ~/dev/cloudsql/INSTANCE_CONNECTION_NAME -U USERNAME -d DB_NAME
-```
+### 
+
+### (DEV) Local setup
+
+@include "setup.md"
