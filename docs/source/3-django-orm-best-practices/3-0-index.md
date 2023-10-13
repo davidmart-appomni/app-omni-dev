@@ -1,4 +1,4 @@
-### Django ORM Best Practices
+### 3. Django ORM Best Practices
 
 @include "./3-1-selecting-fields-wisely.md"
 
