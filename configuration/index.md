@@ -88,7 +88,7 @@ This parameter controls the amount of memory used for sorting and hash operation
 
 | Cloud SQL Flag | Recommended Flag Value |
 | -------------- | ---------------------- |
-| 5242880        | 131072                 |
+| 5242880        | 524288                 |
 
 ##### How can I tell if a query is slow because it actually uses temp files?
 
