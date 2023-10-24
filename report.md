@@ -935,3 +935,11 @@ When choosing an index type for optimization, consider the nature of your data, 
 - Analyze high-impact queries with `pg_stat_statements` to identify queries that are using the most `work_mem`
 - Reduce db-level sorting by using `ORDER BY` alternatives in the application layer
 - Re-evaluate index types to determine if there are more effective options on per-table basis
+- Implement and evalualate cost for all the suggestions made.
+
+Though for now it seems Cloud SQL (postgre sql) would work very well but AlloyDb could be good alternative. 
+
+### Reason for Alloy DB as a replacement:
+- Fully compatible with PostgreSQL, providing flexibility and true portability for your workloads.
+- Superior performance, 4x faster than standard PostgreSQL for transactional workloads.
+- Fast, real-time insights, up to 100x faster analytical queries than standard PostgreSQL.
