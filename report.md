@@ -527,22 +527,22 @@ Analyzing the `pg_stat_statements` view in PostgreSQL is a valuable way to gain 
 > ```
 >
 > Data is not symmetrically divided among various org_id and service_org_id like
-
-| org_id | service_org_id | count  |
-| ------ | -------------- | ------ |
-| 39     | 14687          | 3329   |
-| 337    | 13554          | 17264  |
-| 310    | 19089          | 310706 |
-| 310    | 14699          | 319054 |
-| 370    | 13492          | 26025  |
-| ...    |                |        |
-
-For smaller count optimizer using `workday_workdayuser_service_org_id_9c41f739` ( index on `service_org_id`) , in other case it’s using `workday_wor_usernam_90d816_btree`, which is on `user_name`, `org_id` and `active` field.
-
-# Few suggestions:
-a.) Add service_org_id in the index workday_wor_usernam_90d816_btree, i.e user_name, org_id and active and ,service_org_id. This can be partial index as well with condition on active = True.
-b.) create index on  org_id and active field,service_org_id, user_name. ( This is against the best practice where a high cardinality column should be at first). This can be partial index as well with condition on active = True.
-c.) Partitioned the table on org_id and create index on ( username, org_id, active)
+>
+>| org_id | service_org_id | count  |
+>| ------ | -------------- | ------ |
+>| 39     | 14687          | 3329   |
+>| 337    | 13554          | 17264  |
+>| 310    | 19089          | 310706 |
+>| 310    | 14699          | 319054 |
+>| 370    | 13492          | 26025  |
+>| ...    |                |        |
+>
+>For smaller count optimizer using `workday_workdayuser_service_org_id_9c41f739` ( index on `service_org_id`) , in other case it’s using `workday_wor_usernam_90d816_btree`, which is on `user_name`, `org_id` and `active` field.
+>
+>### Few suggestions:
+>- Add `service_org_id` in the index `workday_wor_usernam_90d816_btree`, i.e `user_name`, `org_id`, `active` and `service_org_id`. This can be partial index as well with condition on `active = True`.
+>- Create index on `org_id` and `active` field,`service_org_id`, `user_name`. (This is against the best practice where a high cardinality column should be at first). This can be partial index as well with condition on `active = True`.
+>- Partition the table on `org_id` and create an index on `(username, org_id, active)`
 
 
 #### Notes:
