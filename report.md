@@ -526,27 +526,24 @@ Analyzing the `pg_stat_statements` view in PostgreSQL is a valuable way to gain 
 >
 > ```
 >
-> Taking into the consideration the above query, the sorting operation is performed in memory, and the memory used is 897826kB. This is a significant amount of memory, and it is used for a single query. Considering excessive count of queries that run sort operations, this leads to overall database performance degradation.
-> Example indexes that can be created to improve the performance of this query:
->
-> ```sql
-> CREATE INDEX workday_workdayuser_username_org_id_active_idx ON workday_workdayuser (username, org_id, active);
-> ```
->
-> This index includes the columns used in the WHERE clause, specifically org_id, active, and service_org_id, which are essential for filtering the data.
->
-> ```sql
-> CREATE INDEX workday_user_index
-> ON workday_workdayuser (org_id, active, service_org_id, username, id);
-> ```
->
-> In addition to the above example, this index covers the columns used in the ORDER BY clause, which are username and id. This can help improve the query's performance by reducing the need for a full table scan when filtering and sorting data based on these columns.
-> To further optimize the sorting performance for your query, you can create a compound index that covers the columns used in the ORDER BY clause. In your query, you are ordering by three columns: username, org_id, and active.
->
-> ```sql
-> CREATE INDEX workday_user_sorted_index
-> ON workday_workdayuser (username ASC, org_id ASC, active ASC);
-> ```
+> Data is not symmetrically divided among various org_id and service_org_id like
+
+| org_id | service_org_id | count  |
+| ------ | -------------- | ------ |
+| 39     | 14687          | 3329   |
+| 337    | 13554          | 17264  |
+| 310    | 19089          | 310706 |
+| 310    | 14699          | 319054 |
+| 370    | 13492          | 26025  |
+| ...    |                |        |
+
+For smaller count optimizer using `workday_workdayuser_service_org_id_9c41f739` ( index on `service_org_id`) , in other case it’s using `workday_wor_usernam_90d816_btree`, which is on `user_name`, `org_id` and `active` field.
+
+# Few suggestions:
+a.) Add service_org_id in the index workday_wor_usernam_90d816_btree, i.e user_name, org_id and active and ,service_org_id. This can be partial index as well with condition on active = True.
+b.) create index on  org_id and active field,service_org_id, user_name. ( This is against the best practice where a high cardinality column should be at first). This can be partial index as well with condition on active = True.
+c.) Partitioned the table on org_id and create index on ( username, org_id, active)
+
 
 #### Notes:
 
@@ -604,24 +601,8 @@ Clean up unused indexes
 
 Notes:
 
-- Consider removing unused indexes. Unused indexes can take up a significant amount of disk space and can slow down data modification operations. You can use the `pg_stat_user_indexes` view to identify unused indexes and remove them using the `DROP INDEX` command.
+- Consider removing unused indexes. Unused indexes can take up a significant amount of disk space and can slow down data modification operations. You can use the `pg_stat_user_indexes` view to identify unused indexes and remove them using the `DROP INDEX` command. 
 
-#### Additional notes:
-
-Data is not symmetrically divided among various org_id and service_org_id like
-
-| org_id | service_org_id | count  |
-| ------ | -------------- | ------ |
-| 39     | 14687          | 3329   |
-| 337    | 13554          | 17264  |
-| 310    | 19089          | 310706 |
-| 310    | 14699          | 319054 |
-| 370    | 13492          | 26025  |
-| ...    |                |        |
-
-For smaller count optimizer using `workday_workdayuser_service_org_id_9c41f739` ( index on `service_org_id`) , in other case it’s using `workday_wor_usernam_90d816_btree`, which is on `user_name`, `org_id` and `active` field.
-
-This can be optimized by "sharding" the data based on `org_id` and `service_org_id` and creating indexes on those fields.
 
 ### Utilize DISTINCT and window functions
 
@@ -954,3 +935,11 @@ When choosing an index type for optimization, consider the nature of your data, 
 - Analyze high-impact queries with `pg_stat_statements` to identify queries that are using the most `work_mem`
 - Reduce db-level sorting by using `ORDER BY` alternatives in the application layer
 - Re-evaluate index types to determine if there are more effective options on per-table basis
+- Implement and evalualate cost for all the suggestions made.
+
+Though for now it seems Cloud SQL (postgre sql) would work very well but AlloyDb could be good alternative. 
+
+### Reason for Alloy DB as a replacement:
+- Fully compatible with PostgreSQL, providing flexibility and true portability for your workloads.
+- Superior performance, 4x faster than standard PostgreSQL for transactional workloads.
+- Fast, real-time insights, up to 100x faster analytical queries than standard PostgreSQL.
